@@ -5,6 +5,7 @@ function ret.loadPlugin()
         config = function ()
             local lspconfig = require('lspconfig')
             lspconfig.pyright.setup({})
+            lspconfig.sumneko_lua.setup({})
         end,
     })
 end

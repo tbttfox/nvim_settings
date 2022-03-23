@@ -4,7 +4,7 @@ packUse = use
 return packer.startup({
     function()
         use("wbthomason/packer.nvim")  -- packer controls itself
-        require("pluginSettings.lush").loadPlugin()
+        -- require("pluginSettings.lush").loadPlugin()
         require("pluginSettings.nvim-treesitter-context").loadPlugin()
         require("pluginSettings.lsp_signature").loadPlugin()
         require("pluginSettings.nvim-lightbulb").loadPlugin()
@@ -34,6 +34,8 @@ return packer.startup({
         require("pluginSettings.nvim-lint").loadPlugin()
         require("pluginSettings.which-key").loadPlugin()
         require("pluginSettings.mapx").loadPlugin()
+        require("pluginSettings.vim-indent-object").loadPlugin()
+
     end
 })
 
