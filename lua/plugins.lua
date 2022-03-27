@@ -35,7 +35,8 @@ return packer.startup({
         require("pluginSettings.which-key").loadPlugin()
         require("pluginSettings.mapx").loadPlugin()
         require("pluginSettings.vim-indent-object").loadPlugin()
-
+        require("pluginSettings.abolish").loadPlugin()
+        require("pluginSettings.wordmotion").loadPlugin()
     end
 })
 

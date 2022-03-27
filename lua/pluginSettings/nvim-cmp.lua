@@ -16,31 +16,37 @@ function ret.loadPlugin()
         },
         config = function ()
             local cmp = require('cmp')
-            cmp.setup({
+            cmp.setup {
                 mapping = {
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        -- This little snippet will confirm with tab
-                        -- and if no entry is selected, will confirm the first item
+                    ['<C-p>'] = cmp.mapping.select_prev_item(),
+                    ['<C-n>'] = cmp.mapping.select_next_item(),
+                    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-e>'] = cmp.mapping.close(),
+                    ['<CR>'] = cmp.mapping.confirm {
+                        behavior = cmp.ConfirmBehavior.Replace,
+                        select = true,
+                    },
+                    ['<Tab>'] = function(fallback)
                         if cmp.visible() then
-                            local entry = cmp.get_selected_entry()
-                            if not entry then
-                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-                            else
-                                cmp.confirm()
-                            end
+                            cmp.select_next_item()
                         else
                             fallback()
                         end
-                    end, {"i","s","c",}),
+                    end,
+                    ['<S-Tab>'] = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                    end,
                 },
-                sources = cmp.config.sources({
-                    {name = 'nvim_lsp'},
-                    {name = 'luasnip'},
+                sources = {
+                    { name = 'nvim_lsp' },
                 },
-                {
-                    {name = 'buffer'},
-                })
-            })
+            }
         end,
     })
 end
