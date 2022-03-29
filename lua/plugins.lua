@@ -37,6 +37,7 @@ return packer.startup({
         require("pluginSettings.vim-indent-object").loadPlugin()
         require("pluginSettings.abolish").loadPlugin()
         require("pluginSettings.wordmotion").loadPlugin()
+        require("pluginSettings.black").loadPlugin()
     end
 })
 

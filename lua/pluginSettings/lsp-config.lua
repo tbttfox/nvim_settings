@@ -39,10 +39,17 @@ function ret.loadPlugin()
             local lspconfig = require('lspconfig')
             lspconfig.pyright.setup({
                 on_attach = on_attach,
-                -- venvPath="C:\\Users\\tyler\\src\\virtualenvs",
-                -- venv="local",
-                -- extraPaths = {},
-                pythonVersion = "2.7",
+                settings = {
+                    venvPath="C:\\Users\\tyler\\src\\virtualenvs",
+                    pythonVersion = "3.7",
+                    venv="localPy3",
+                    python = {
+                        extra_paths = {
+                            'C:\\Program Files\\Autodesk\\Maya2022\\Python27\\Lib\\site-packages',
+                            'C:\\Program Files\\Autodesk\\3ds Max 2019\\python\\Lib\\site-packages',
+                        }
+                    }
+                },
             })
             lspconfig.sumneko_lua.setup({
                 on_attach = on_attach,
