@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "romgrk/nvim-treesitter-context",
         config = function ()

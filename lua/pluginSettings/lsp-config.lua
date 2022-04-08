@@ -32,7 +32,7 @@ end
 
 
 
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "neovim/nvim-lspconfig",
         config = function ()

@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "hrsh7th/nvim-cmp",
         requires = {

@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "folke/trouble.nvim",
         requires = "kyazdani42/nvim-web-devicons",

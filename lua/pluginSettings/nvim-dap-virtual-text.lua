@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "theHamsta/nvim-dap-virtual-text",
         requires = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },

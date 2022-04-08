@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "FotiadisM/tabset.nvim",
         config = function ()

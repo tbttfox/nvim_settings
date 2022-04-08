@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",

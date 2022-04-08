@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "lukas-reineke/indent-blankline.nvim",
         config = function ()

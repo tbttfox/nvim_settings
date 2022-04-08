@@ -1,5 +1,5 @@
 local ret = {}
-function ret.loadPlugin()
+function ret.loadPlugin(packUse)
     packUse({
         "rcarriga/nvim-dap-ui",
         requires = "mfussenegger/nvim-dap",
