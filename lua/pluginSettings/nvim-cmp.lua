@@ -16,7 +16,7 @@ function ret.loadPlugin(packUse)
         },
         config = function ()
             local cmp = require('cmp')
-            cmp.setup {
+            cmp.setup({
                 mapping = {
                     ['<C-p>'] = cmp.mapping.select_prev_item(),
                     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -46,7 +46,7 @@ function ret.loadPlugin(packUse)
                 sources = {
                     { name = 'nvim_lsp' },
                 },
-            }
+            })
         end,
     })
 end

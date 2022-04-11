@@ -5,23 +5,18 @@ function ret.loadPlugin(packUse)
         "nvim-telescope/telescope.nvim",
         requires = {'nvim-lua/plenary.nvim'},
         -- module = "telescope",
-        after = {"telescope-packer.nvim", },
+        -- after = {"mapx.nvim", },
         config = function ()
             require('telescope').setup{
                 defaults = {
-                    mappings = {
-                        i = {
-                            ["<C-h>"] = "which_key"
-                        }
-                    }
-                }
+                    initial_mode = "normal",
+                },
             }
-
-            local opts = { noremap=true, silent=true }
-            vim.api.nvim_set_keymap('n', '<space>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', opts)
-            vim.api.nvim_set_keymap('n', '<space>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
-            vim.api.nvim_set_keymap('n', '<space>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', opts)
-            vim.api.nvim_set_keymap('n', '<space>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', opts)
+            local mapx = require('mapx')
+            mapx.nnoremap('<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', 'Telescope: Find Files')
+            mapx.nnoremap('<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', 'Telescope: File Grep')
+            mapx.nnoremap('<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', 'Telescope: Find Buffer')
+            mapx.nnoremap('<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', 'Telescope: Find Help')
         end,
     })
 end
