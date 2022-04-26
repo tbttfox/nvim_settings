@@ -36,6 +36,7 @@ return packer.startup({
         require("pluginSettings.abolish").loadPlugin(use)
         require("pluginSettings.wordmotion").loadPlugin(use)
         require("pluginSettings.black").loadPlugin(use)
+        require("pluginSettings.rooter").loadPlugin(use)
     end
 })
 

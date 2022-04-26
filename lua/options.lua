@@ -32,8 +32,14 @@ vim.opt.showmatch = true                 -- showmatch: Show the matching bracket
 vim.opt.clipboard = 'unnamed'            -- windows clipboard = vim * buffer... with this yy yanks to clipboard
 vim.opt.backspace = 'indent,eol,start'   -- allow backspacing over everything in insert mode
 
--- vim.opt.foldmethod = 'indent'            -- Fold indentations ... may change this to syntax later
--- vim.opt.fml = 0                          -- allow folding of single lines
+vim.opt.foldmethod = 'indent'            -- Fold indentations ... may change this to syntax later
+-- vim.opt.foldmethod = 'expr'                      -- Fold using treesitter syntax
+-- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.fml = 0                          -- allow folding of single lines
 
-vim.g.foldmethod = 'expr'                      -- Fold using treesitter syntax
-vim.g.foldexpr = 'nvim_treesitter#foldexpr()'
+-- enable indentation on line wrapping
+-- ident by an additional 2 characters on wrapped lines, when line >= 40 characters
+-- put >> at start of line
+vim.opt.breakindent = true
+vim.opt.breakindentopt="shift:2,min:40,sbr"
+vim.opt.showbreak=">>"
