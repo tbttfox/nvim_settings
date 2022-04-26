@@ -10,7 +10,7 @@ return packer.startup({
         require("pluginSettings.lualine").loadPlugin(use)
         require("pluginSettings.vim-surround").loadPlugin(use)
         require("pluginSettings.vim-repeat").loadPlugin(use)
-        require("pluginSettings.lightspeed").loadPlugin(use)
+        -- require("pluginSettings.lightspeed").loadPlugin(use)
         require("pluginSettings.nvim-treesitter").loadPlugin(use)
         require("pluginSettings.lsp-config").loadPlugin(use)
         require("pluginSettings.nvim-lsp-installer").loadPlugin(use)
