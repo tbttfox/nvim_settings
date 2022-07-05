@@ -38,6 +38,8 @@ return packer.startup({
         require("pluginSettings.black").loadPlugin(use)
         require("pluginSettings.rooter").loadPlugin(use)
         require("pluginSettings.vim-sleuth").loadPlugin(use)
+        require("pluginSettings.bufdelete").loadPlugin(use)
+        require("pluginSettings.nvim-winraise").loadPlugin(use)
     end
 })
 

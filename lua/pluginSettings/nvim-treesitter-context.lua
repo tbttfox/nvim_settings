@@ -5,7 +5,7 @@ function ret.loadPlugin(packUse)
         config = function ()
             local tsc = require("treesitter-context")
             tsc.setup({
-                enable = true,
+                enable = false,
                 throttle = true,
                 max_lines = 2,
             })
