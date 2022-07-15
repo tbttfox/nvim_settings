@@ -1,8 +1,22 @@
 vim.g.python_host_prog = "C:\\Python27\\python.exe"
-vim.g.python3_host_prog = "C:\\Program Files\\Python37\\python3.exe"
+vim.g.python3_host_prog = "C:\\Program Files\\Python39\\python3.exe"
 vim.g.mapleader = " "
 
 require("plugins")
 require("options")
 require("mappings")
-vim.cmd('colorscheme muzzl')
+
+-- The colorscheme must be set before the UI is
+-- loaded for the tab lines plugin to work
+vim.cmd("colorscheme muzzl")
+
+-- Guifont must be called after the UI is loaded
+vim.api.nvim_create_autocmd(
+    "UIEnter", {
+        once = true,
+        callback = function()
+            vim.cmd("Guifont! RobotoMono NF:h10")
+            vim.opt.linespace=2
+        end
+    }
+)
