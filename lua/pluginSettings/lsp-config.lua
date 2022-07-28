@@ -30,27 +30,35 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-
-
 function ret.loadPlugin(packUse)
     packUse({
         "neovim/nvim-lspconfig",
         config = function ()
             local lspconfig = require('lspconfig')
-            lspconfig.pyright.setup({
+            lspconfig.pylsp.setup({
                 on_attach = on_attach,
+                cmd = {[[C:/Users/tyler/AppData/Local/nvim/venvs/nvim/Scripts/pylsp.exe]]},
                 settings = {
-                    venvPath="C:\\Users\\tyler\\src\\virtualenvs",
-                    pythonVersion = "3.7",
-                    venv="localPy3",
-                    python = {
-                        extra_paths = {
-                            'C:\\Program Files\\Autodesk\\Maya2022\\Python27\\Lib\\site-packages',
-                            'C:\\Program Files\\Autodesk\\3ds Max 2019\\python\\Lib\\site-packages',
-                        }
-                    }
+                    pylsp = {
+                        configurationSources = {"flake8"},
+                        plugins = {
+                            flake8 = {
+                                enabled = true,
+                                executable = [[C:/Users/tyler/AppData/Local/nvim/venvs/nvim/Scripts/flake8.exe]],
+                                maxLineLength = 150,
+                            },
+                            pycodestyle = {enabled = false},
+                            mccabe = {enabled = false},
+                            autopep8 = {enabled = false},
+                            pyflakes = {enabled = false},
+                            pyls_mypy = {enabled = true},
+                            rope_completion = {enabled = true},
+
+                        },
+                    },
                 },
             })
+
             lspconfig.sumneko_lua.setup({
                 on_attach = on_attach,
                 settings = {
