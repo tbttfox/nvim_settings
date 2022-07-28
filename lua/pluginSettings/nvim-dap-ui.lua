@@ -4,7 +4,8 @@ function ret.loadPlugin(packUse)
         "rcarriga/nvim-dap-ui",
         requires = "mfussenegger/nvim-dap",
         config = function ()
-            local dapui = require("dapui")
+            require("dapui").setup({
+            })
         end,
     })
 end
