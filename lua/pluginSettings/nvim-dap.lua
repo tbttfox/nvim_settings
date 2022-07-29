@@ -3,7 +3,9 @@ function ret.loadPlugin(packUse)
     packUse({
         "mfussenegger/nvim-dap",
         config = function ()
-            local dap = require('dap')
+            require('dap').setup({
+
+            })
         end,
     })
 end
