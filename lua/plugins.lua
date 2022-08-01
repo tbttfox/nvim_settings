@@ -22,6 +22,7 @@ return packer.startup({
         -- require("pluginSettings.nvim-dap-python").loadPlugin(use)
         require("pluginSettings.nvim-dap-ui").loadPlugin(use)
         require("pluginSettings.nvim-dap").loadPlugin(use)
+        require("pluginSettings.nvim-dap-python").loadPlugin(use)
         require("pluginSettings.nvim-dap-virtual-text").loadPlugin(use)
 
         -- Treesitter Stuff

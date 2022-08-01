@@ -8,7 +8,7 @@ function ret.loadPlugin(packUse)
             local masonRoot = table.concat({ vim.fn.stdpath("data"), "mason" }, sep)
             local winPyExe = table.concat({"packages", "debugpy", "venv", "Scripts", "python.exe"}, sep)
             local dapExe = table.concat({masonRoot, winPyExe}, sep)
-            require('nvim-dap-python').setup({dapExe})
+            require('dap-python').setup(dapExe)
         end,
     })
 end
