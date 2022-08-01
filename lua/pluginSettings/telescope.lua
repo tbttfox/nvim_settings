@@ -5,7 +5,7 @@ function ret.loadPlugin(packUse)
         "nvim-telescope/telescope.nvim",
         requires = {'nvim-lua/plenary.nvim'},
         -- module = "telescope",
-        -- after = {"mapx.nvim", },
+        after = {"mapx.nvim", },
         config = function ()
             require('telescope').setup{
                 defaults = {

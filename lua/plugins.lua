@@ -33,6 +33,11 @@ return packer.startup({
         -- Python stuff
         require("pluginSettings.black").loadPlugin(use)
 
+        -- Telescope Stuff
+        require("pluginSettings.telescope").loadPlugin(use)
+        require("pluginSettings.telescope-packer").loadPlugin(use)
+        require("pluginSettings.telescope-dap").loadPlugin(use)
+
         -- Generic Stuff
         require("pluginSettings.lualine").loadPlugin(use)
         require("pluginSettings.vim-surround").loadPlugin(use)
@@ -43,8 +48,6 @@ return packer.startup({
         require("pluginSettings.indent-blankline").loadPlugin(use)
         require("pluginSettings.nvim-autopairs").loadPlugin(use)
         require("pluginSettings.symbols-outline").loadPlugin(use)
-        require("pluginSettings.telescope-packer").loadPlugin(use)
-        require("pluginSettings.telescope").loadPlugin(use)
         require("pluginSettings.nvim-lint").loadPlugin(use)
         require("pluginSettings.which-key").loadPlugin(use)
         require("pluginSettings.mapx").loadPlugin(use)
