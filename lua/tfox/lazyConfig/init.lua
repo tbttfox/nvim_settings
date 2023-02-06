@@ -13,9 +13,23 @@ return {
     "tpope/vim-fugitive",
     "tpope/vim-surround",
     "tpope/vim-repeat",
-    "tpope/vim-sleuth",
+    "tpope/vim-abolish",
+    "NMAC427/guess-indent.nvim",
     "numToStr/Comment.nvim",
     "folke/which-key.nvim",
+    {
+        "chaoren/vim-wordmotion",
+        config = function ()
+            vim.g.wordmotion_prefix = ','
+        end
+    },
+    {
+        "airblade/vim-rooter",
+        config = function()
+            vim.g.rooter_silent_chdir = 1
+            vim.g.rooter_patterns = {'.git', 'Makefile', '*.sln', 'build/env.sh'}
+        end,
+    },
     "michaeljsmith/vim-indent-object",
     {
         "lukas-reineke/indent-blankline.nvim",
