@@ -8,6 +8,7 @@ vim.opt.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
+vim.opt.shiftround = true
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
@@ -30,6 +31,7 @@ vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
+vim.opt.showmatch = true
 
 vim.opt.updatetime = 50
 
@@ -38,5 +40,10 @@ vim.opt.backspace = "indent,eol,start"
 
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 99
+vim.opt.fml = 0
+
+vim.opt.breakindent = true
+vim.opt.breakindentopt="shift:2,min:40,sbr"
+vim.opt.showbreak=">>"
 
 vim.g.mapleader = " "
