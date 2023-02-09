@@ -6,10 +6,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
-require("tfox.config")
-require("tfox.util")
+require("lazyvim.config")
+require("lazyvim.util")
 require("lazy").setup({
-  import = "tfox.plugins",
+  import = "lazyvim.plugins",
   install = {
     colorscheme = { "arctic" },
   },

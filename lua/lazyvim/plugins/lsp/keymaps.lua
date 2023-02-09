@@ -5,7 +5,7 @@ M._keys = nil
 
 ---@return (LazyKeys|{has?:string})[]
 function M.get()
-  local format = require("tfox.plugins.lsp.format").format
+  local format = require("lazyvim.plugins.lsp.format").format
   ---@class PluginLspKeys
   -- stylua: ignore
   M._keys = M._keys or {

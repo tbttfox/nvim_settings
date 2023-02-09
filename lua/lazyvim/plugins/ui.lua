@@ -49,7 +49,7 @@ return {
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         diagnostics_indicator = function(_, _, diag)
-          local icons = require("tfox.config").icons.diagnostics
+          local icons = require("lazyvim.config").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
             .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
@@ -71,7 +71,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function(plugin)
-      local icons = require("tfox.config").icons
+      local icons = require("lazyvim.config").icons
 
       local function fg(name)
         return function()
@@ -276,7 +276,7 @@ return {
     lazy = true,
     init = function()
       vim.g.navic_silence = true
-      require("tfox.util").on_attach(function(client, buffer)
+      require("lazyvim.util").on_attach(function(client, buffer)
         if client.server_capabilities.documentSymbolProvider then
           require("nvim-navic").attach(client, buffer)
         end
@@ -287,7 +287,7 @@ return {
         separator = " ",
         highlight = true,
         depth_limit = 5,
-        icons = require("tfox.config").icons.kinds,
+        icons = require("lazyvim.config").icons.kinds,
       }
     end,
   },

@@ -11,7 +11,7 @@ return {
       {
         "hrsh7th/cmp-nvim-lsp",
         cond = function()
-          return require("tfox.util").has("nvim-cmp")
+          return require("lazyvim.util").has("nvim-cmp")
         end,
       },
     },
@@ -67,15 +67,15 @@ return {
     ---@param opts PluginLspOpts
     config = function(plugin, opts)
       -- setup autoformat
-      require("tfox.plugins.lsp.format").autoformat = opts.autoformat
+      require("lazyvim.plugins.lsp.format").autoformat = opts.autoformat
       -- setup formatting and keymaps
-      require("tfox.util").on_attach(function(client, buffer)
-        require("tfox.plugins.lsp.format").on_attach(client, buffer)
-        require("tfox.plugins.lsp.keymaps").on_attach(client, buffer)
+      require("lazyvim.util").on_attach(function(client, buffer)
+        require("lazyvim.plugins.lsp.format").on_attach(client, buffer)
+        require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
       end)
 
       -- diagnostics
-      for name, icon in pairs(require("tfox.config").icons.diagnostics) do
+      for name, icon in pairs(require("lazyvim.config").icons.diagnostics) do
         name = "DiagnosticSign" .. name
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
       end

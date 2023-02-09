@@ -1,4 +1,4 @@
-local Util = require("tfox.util")
+local Util = require("lazyvim.util")
 
 return {
 
@@ -10,7 +10,7 @@ return {
       {
         "<leader>fe",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = require("tfox.util").get_root() })
+          require("neo-tree.command").execute({ toggle = true, dir = require("lazyvim.util").get_root() })
         end,
         desc = "Explorer NeoTree (root dir)",
       },
