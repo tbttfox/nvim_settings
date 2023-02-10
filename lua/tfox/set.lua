@@ -1,6 +1,6 @@
 vim.opt.mouse = 'a'
 vim.opt.title = true
-vim.opt.history = 1000
+vim.opt.history = 10000
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -46,4 +46,9 @@ vim.opt.breakindent = true
 vim.opt.breakindentopt="shift:2,min:40,sbr"
 vim.opt.showbreak=">>"
 
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.shortmess:append { W = true, I = true, c = true }
+vim.opt.showmode = false -- Dont show mode since we have a statusline
+
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "

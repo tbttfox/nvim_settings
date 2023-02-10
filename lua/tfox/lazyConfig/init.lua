@@ -3,6 +3,21 @@
 local Utils = require("tfox.utils")
 
 return {
+    { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+    { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+
+    {
+        "folke/persistence.nvim",
+        event = "BufReadPre",
+        opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help" } },
+        -- stylua: ignore
+        keys = {
+            { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+            { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+            { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+        },
+    },
+
     {
         "tbttfox/arctic.nvim",
         dependencies = {"rktjmp/lush.nvim"},
@@ -79,12 +94,14 @@ return {
     { "nvim-tree/nvim-web-devicons", lazy = true },
     { "MunifTanjim/nui.nvim", lazy = true },
 
+    --[[
     {
         "chaoren/vim-wordmotion",
         config = function ()
             vim.g.wordmotion_prefix = ','
         end
     },
+    --]]
 
     "akinsho/bufferline.nvim",
 
@@ -339,9 +356,9 @@ return {
             mappings = {
                 add = "ys", -- Add surrounding in Normal and Visual modes
                 delete = "ds", -- Delete surrounding
-                find = "yfs", -- Find surrounding (to the right)
-                find_left = "yfS", -- Find surrounding (to the left)
-                highlight = "hs", -- Highlight surrounding
+                find = "yf", -- Find surrounding (to the right)
+                find_left = "yF", -- Find surrounding (to the left)
+                highlight = "yh", -- Highlight surrounding
                 replace = "cs", -- Replace surrounding
             },
         },
@@ -601,8 +618,6 @@ return {
             { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
         },
     },
-
-
 
 
 }
