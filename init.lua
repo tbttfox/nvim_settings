@@ -1,1 +1,1 @@
-require("lazyvim")
+require("tfox")
