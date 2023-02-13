@@ -75,7 +75,10 @@ return {
         end,
     },
 
-    "nvim-treesitter/playground",
+    {
+        "nvim-treesitter/playground",
+        event = "VeryLazy",
+    },
 
     {
         "mbbill/undotree",
@@ -86,6 +89,7 @@ return {
 
     {
         "tpope/vim-fugitive",
+        event = "VeryLazy",
         config = function()
             vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
         end
@@ -467,6 +471,22 @@ return {
                     f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
                     c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
                 },
+
+                mappings = {
+                    -- Main textobject prefixes
+                    around = 'a',
+                    inside = 'i',
+
+                    -- Next/last variants
+                    around_next = 'an',
+                    inside_next = 'in',
+                    around_last = '', --'al', I prefer "Line" objects
+                    inside_last = '', --'il', I prefer "Line" objects
+
+                    -- Move cursor to corresponding edge of `a` textobject
+                    goto_left = 'g[',
+                    goto_right = 'g]',
+                },
             }
         end,
         config = function(_, opts)
@@ -619,5 +639,86 @@ return {
         },
     },
 
+    {
+        "mfussenegger/nvim-dap",
+        event = "VeryLazy",
+        init = function()
+            -- Init always gets loaded
+            vim.keymap.set("n", "<F2>", ":lua require('dap').step_into()<CR>")
+            vim.keymap.set("n", "<F3>", ":lua require('dap').step_out()<CR>")
+            vim.keymap.set("n", "<F4>", ":lua require('dap').step_over()<CR>")
+            vim.keymap.set("n", "<F5>", ":lua require('dap').continue()<CR>")
+            vim.keymap.set("n", "<leader><F5>", ":lua require('dap').run_last()<CR>")
+
+            vim.keymap.set("n", "<leader>b", ":lua require('dap').toggle_breakpoint()<CR>")
+            vim.keymap.set("n", "<leader>B", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint Condition: '))<CR>")
+            vim.keymap.set("n", "<leader>lp", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message:'))<CR>")
+            vim.keymap.set("n", "<leader>dr", ":lua require('dap').repl.open()<CR>")
+            vim.keymap.set("n", "<leader>dt", ":lua require('dap').terminate()<CR>")
+        end
+    },
+
+    {
+        "theHamsta/nvim-dap-virtual-text",
+        event = "VeryLazy",
+    },
+
+    {
+        "mfussenegger/nvim-dap-python",
+        event = "VeryLazy",
+        config = function ()
+            local sep = "\\"
+            local masonRoot = table.concat({ vim.fn.stdpath("data"), "mason" }, sep)
+            local winPyExe = table.concat({"packages", "debugpy", "venv", "Scripts", "pythonw.exe"}, sep)
+            local dapExe = table.concat({masonRoot, winPyExe}, sep)
+            require('dap-python').setup(dapExe)
+
+            table.insert(
+                require('dap').configurations.python,
+                1,
+                {
+                    console = "integratedTerminal",
+                    name = 'FaceFit Py3 Launch',
+                    program = '${file}',
+                    request = 'launch',
+                    type = 'python',
+                    python = '\\\\source\\source\\dev\\tyler\\FaceFit\\FaceFitPy3\\Scripts\\python.exe',
+                }
+            )
+
+            table.insert(
+                require('dap').configurations.python,
+                1,
+                {
+                    console = "integratedTerminal",
+                    name = 'Global Py3',
+                    program = '${file}',
+                    request = 'launch',
+                    type = 'python',
+                    python = 'C:\\Program Files\\Python39\\python.exe',
+                }
+            )
+        end,
+    },
+
+    {
+        "rcarriga/nvim-dap-ui",
+        event = "VeryLazy",
+        init = function()
+            local dapNoFoldGrp = vim.api.nvim_create_augroup("DapNoFold", { clear = true })
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = {"dap*", },
+                command = "silent! lua vim.wo.foldenable = false",
+                group = dapNoFoldGrp,
+            })
+        end,
+        config = function ()
+            local dap, dapui = require("dap"), require("dapui")
+            dapui.setup({})
+            dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+            dap.listeners.after.event_terminated["dapui_config"] = dapui.close
+            dap.listeners.after.event_exited["dapui_config"] = dapui.close
+        end,
+    },
 
 }

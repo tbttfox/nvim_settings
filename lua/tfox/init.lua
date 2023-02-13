@@ -12,6 +12,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
 require("tfox.remap")
 require("tfox.set")
+require("tfox.autocmd")
 require("lazy").setup("tfox.lazyConfig")

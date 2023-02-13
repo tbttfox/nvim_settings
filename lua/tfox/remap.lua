@@ -80,3 +80,9 @@ vim.keymap.set("n", "<leader>n", ":noh<cr>")
 
 -- add expected esc behavior to terminal
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
+-- Simple line textobjects
+vim.keymap.set("x", "il", "g_o^", { silent = true })
+vim.keymap.set("o", "il", ":normal vil<CR>", { silent = true })
+vim.keymap.set("x", "al", "$o^", { silent = true })
+vim.keymap.set("o", "al", ":normal val<CR>", { silent = true })
