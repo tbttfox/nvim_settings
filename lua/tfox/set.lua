@@ -52,3 +52,6 @@ vim.opt.showmode = false -- Dont show mode since we have a statusline
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+vim.opt.guifont = "Hack NFM:h10"
+vim.opt.linespace = 2

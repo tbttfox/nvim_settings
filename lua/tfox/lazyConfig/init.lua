@@ -19,6 +19,13 @@ return {
     },
 
     {
+        "psf/black",
+        init = function()
+            vim.g.black_skip_string_normalization = true
+        end,
+    },
+
+    {
         "tbttfox/arctic.nvim",
         dependencies = {"rktjmp/lush.nvim"},
         config = function() vim.cmd.colorscheme("arctic") end,
@@ -190,6 +197,7 @@ return {
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v1.x',
+        --event = { "BufReadPost", "BufNewFile" },
         dependencies = {
             -- LSP Support
             {'neovim/nvim-lspconfig'},             -- Required
@@ -207,8 +215,11 @@ return {
             -- Snippets
             {'L3MON4D3/LuaSnip'},             -- Required
             {'rafamadriz/friendly-snippets'}, -- Optional
+
+            -- Neoconf has to come first
+            {"folke/neoconf.nvim"}
         },
-        configure = function()
+        init = function()
             local lsp = require("lsp-zero")
             lsp.preset("recommended")
             lsp.nvim_workspace()
@@ -644,17 +655,18 @@ return {
         event = "VeryLazy",
         init = function()
             -- Init always gets loaded
-            vim.keymap.set("n", "<F2>", ":lua require('dap').step_into()<CR>")
-            vim.keymap.set("n", "<F3>", ":lua require('dap').step_out()<CR>")
-            vim.keymap.set("n", "<F4>", ":lua require('dap').step_over()<CR>")
-            vim.keymap.set("n", "<F5>", ":lua require('dap').continue()<CR>")
-            vim.keymap.set("n", "<leader><F5>", ":lua require('dap').run_last()<CR>")
 
-            vim.keymap.set("n", "<leader>b", ":lua require('dap').toggle_breakpoint()<CR>")
-            vim.keymap.set("n", "<leader>B", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint Condition: '))<CR>")
-            vim.keymap.set("n", "<leader>lp", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message:'))<CR>")
-            vim.keymap.set("n", "<leader>dr", ":lua require('dap').repl.open()<CR>")
-            vim.keymap.set("n", "<leader>dt", ":lua require('dap').terminate()<CR>")
+            vim.keymap.set("n", "<F2>", require('dap').step_into)
+            vim.keymap.set("n", "<F3>", require('dap').step_out)
+            vim.keymap.set("n", "<F4>", require('dap').step_over)
+            vim.keymap.set("n", "<F5>", require('dap').continue)
+            vim.keymap.set("n", "<leader><F5>", require('dap').run_last)
+
+            vim.keymap.set("n", "<leader>b", require('dap').toggle_breakpoint)
+            vim.keymap.set("n", "<leader>B", function() require('dap').set_breakpoint(vim.fn.input('Breakpoint Condition: ')) end)
+            vim.keymap.set("n", "<leader>lp", function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message:')) end)
+            vim.keymap.set("n", "<leader>dr", require('dap').repl.open)
+            vim.keymap.set("n", "<leader>dt", require('dap').terminate)
         end
     },
 
