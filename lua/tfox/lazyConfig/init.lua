@@ -3,9 +3,14 @@
 local Utils = require("tfox.utils")
 
 return {
+
+    -- Global & Per project LSP configuration
     { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+
+    -- Ensure that the lua LSP has access to neovim objects
     { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 
+    -- Store sessions automagically
     {
         "folke/persistence.nvim",
         event = "BufReadPre",
@@ -18,6 +23,7 @@ return {
         },
     },
 
+    -- Python code formatting
     {
         "psf/black",
         init = function()
@@ -25,12 +31,14 @@ return {
         end,
     },
 
+    -- My own color
     {
         "tbttfox/arctic.nvim",
         dependencies = {"rktjmp/lush.nvim"},
         config = function() vim.cmd.colorscheme("arctic") end,
     },
 
+    -- Treesitter code parsing
     {
         "nvim-treesitter/nvim-treesitter",
         build=":TSUpdate",
@@ -82,11 +90,13 @@ return {
         end,
     },
 
+    -- Show the treesitter tree in an explorable buffer
     {
         "nvim-treesitter/playground",
         event = "VeryLazy",
     },
 
+    -- Show an explorable undo tree so I don't lose any changes
     {
         "mbbill/undotree",
         config = function()
@@ -94,6 +104,7 @@ return {
         end
     },
 
+    -- Vim git integration
     {
         "tpope/vim-fugitive",
         event = "VeryLazy",
@@ -102,10 +113,14 @@ return {
         end
     },
 
+    -- Some cool icons
     { "nvim-tree/nvim-web-devicons", lazy = true },
+
+    -- A UI component library
     { "MunifTanjim/nui.nvim", lazy = true },
 
     --[[
+    -- Separate words into subword objects
     {
         "chaoren/vim-wordmotion",
         config = function ()
@@ -114,8 +129,15 @@ return {
     },
     --]]
 
-    "akinsho/bufferline.nvim",
+    -- List the open buffers along the top of the screen
+    {
+        "akinsho/bufferline.nvim",
+        init = function()
+            require("bufferline").setup({})
+        end,
+    },
 
+    -- A very nice looking statusline
     {
         "nvim-lualine/lualine.nvim",
         opts = function(plugin)
@@ -194,6 +216,7 @@ return {
         end,
     },
 
+    -- Set up all of my lsp in one place
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v1.x',
@@ -227,6 +250,7 @@ return {
         end
     },
 
+    -- Automatically CD to the root of the current project
     {
         "airblade/vim-rooter",
         config = function()
@@ -244,24 +268,12 @@ return {
         end,
     },
 
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies="nvim-lua/plenary.nvim",
-        branch = '0.1.x',
-        configure=function()
-            local builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-            vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-            vim.keymap.set('n', '<leader>ps', function()
-                builtin.grep_string({search= vim.fn.input("Grep > ")})
-            end)
-        end
-    },
-
+    -- AWESOME fuzzy finder over ... well ... everything
     {
         "nvim-telescope/telescope.nvim",
         cmd = "Telescope",
-        version = false, -- telescope did only one release, so use HEAD for now
+        branch = '0.1.x',
+        dependencies="nvim-lua/plenary.nvim",
         keys = {
             { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
             { "<leader>/", Utils.telescope("live_grep"), desc = "Find in Files (Grep)" },
@@ -337,6 +349,7 @@ return {
         },
     },
 
+    -- Draw nice vertical alignment indicators
     {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile" },
@@ -349,6 +362,8 @@ return {
         },
     },
 
+    -- add the surround objects
+    -- TODO: Figure out how to stop these mappings in visual mode
     {
         "echasnovski/mini.surround",
         keys = function(_, keys)
@@ -382,9 +397,15 @@ return {
             require("mini.surround").setup(opts)
         end,
     },
+
+    -- Find/Replace while keeping capitalization
+    -- Also "coerce" words between Camel, snake, etc..
     "tpope/vim-abolish",
+
+    -- match the indentation style of the current file
     "NMAC427/guess-indent.nvim",
 
+    -- A file explorer
     {
         "nvim-neo-tree/neo-tree.nvim",
         cmd = "Neotree",
@@ -424,6 +445,7 @@ return {
         },
     },
 
+    -- Keep the current split layout with buffers
     {
         "echasnovski/mini.bufremove",
         keys = {
@@ -432,6 +454,7 @@ return {
         },
     },
 
+    -- Automatically make paired parnes/quotes/etc
     {
         "echasnovski/mini.pairs",
         config = function(_, opts)
@@ -439,6 +462,7 @@ return {
         end,
     },
 
+    -- Set the commentstrinf for the file, and add some mappings to comment blocks
     {
         "echasnovski/mini.comment",
         event = "VeryLazy",
@@ -454,6 +478,7 @@ return {
         end,
     },
 
+    -- Add some more objects based on treesitter (functions/blocks/etc)
     {
         "echasnovski/mini.ai",
         -- keys = {
@@ -506,6 +531,7 @@ return {
         end,
     },
 
+    -- Navigate over todos
     {
         "folke/todo-comments.nvim",
         cmd = { "TodoTrouble", "TodoTelescope" },
@@ -520,9 +546,11 @@ return {
         },
     },
 
+    -- Show the current code context at the top of the screen
     {
         "SmiteshP/nvim-navic",
         lazy = true,
+        dependencies = {"neovim/nvim-lspconfig"},
         init = function()
             vim.g.navic_silence = true
             Utils.on_attach(function(client, buffer)
@@ -541,28 +569,7 @@ return {
         end,
     },
 
-    {
-        "rcarriga/nvim-notify",
-        keys = {
-            {
-                "<leader>un",
-                function()
-                    require("notify").dismiss({ silent = true, pending = true })
-                end,
-                desc = "Delete all Notifications",
-            },
-        },
-        opts = {
-            timeout = 3000,
-            max_height = function()
-                return math.floor(vim.o.lines * 0.75)
-            end,
-            max_width = function()
-                return math.floor(vim.o.columns * 0.75)
-            end,
-        },
-    },
-
+    -- Keep track of all my keys, and let me know what they are if I pause in the middle
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
@@ -594,6 +601,7 @@ return {
         end,
     },
 
+    -- Use the quickfix list for errors
     {
         "folke/trouble.nvim",
         cmd = { "TroubleToggle", "Trouble" },
@@ -606,6 +614,31 @@ return {
         },
     },
 
+    --[[
+    -- Notifications go in the top-right
+    {
+        "rcarriga/nvim-notify",
+        keys = {
+            {
+                "<leader>un",
+                function()
+                    require("notify").dismiss({ silent = true, pending = true })
+                end,
+                desc = "Delete all Notifications",
+            },
+        },
+        opts = {
+            timeout = 3000,
+            max_height = function()
+                return math.floor(vim.o.lines * 0.75)
+            end,
+            max_width = function()
+                return math.floor(vim.o.columns * 0.75)
+            end,
+        },
+    },
+
+    -- the command line goes into its own floating window
     {
         "stevearc/dressing.nvim",
         lazy = true,
@@ -623,6 +656,7 @@ return {
         end,
     },
 
+    -- Expermiental UI changes
     {
         "folke/noice.nvim",
         event = "VeryLazy",
@@ -649,7 +683,9 @@ return {
             { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
         },
     },
+    --]]
 
+    -- The Debug Adapter Protocol
     {
         "mfussenegger/nvim-dap",
         event = "VeryLazy",
@@ -670,11 +706,13 @@ return {
         end
     },
 
+    -- Add more information about the current state from DAP while debugging
     {
         "theHamsta/nvim-dap-virtual-text",
         event = "VeryLazy",
     },
 
+    -- Easily set up python for the dap
     {
         "mfussenegger/nvim-dap-python",
         event = "VeryLazy",
@@ -713,6 +751,7 @@ return {
         end,
     },
 
+    -- A very nice UI for the DAP
     {
         "rcarriga/nvim-dap-ui",
         event = "VeryLazy",
