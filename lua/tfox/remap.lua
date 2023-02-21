@@ -85,3 +85,6 @@ vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and 
 vim.keymap.set({"n", "x", "o"}, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
 vim.keymap.set({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 
+-- set the font size with ctrl+scrollWheel
+vim.keymap.set({"n", "i", "v", "x"}, "<c-ScrollWheelUp>", function() require('tfox.utils').fontZoom(1) end, { silent = true })
+vim.keymap.set({"n", "i", "v", "x"}, "<c-ScrollWheelDown>", function() require('tfox.utils').fontZoom(-1) end, { silent = true })

@@ -962,7 +962,7 @@ return {
                     program = '${file}',
                     request = 'launch',
                     type = 'python',
-                    python = 'C:\\Program Files\\Python39\\python.exe',
+                    python = 'C:\\Users\\Tyler\\AppData\\Local\\Programs\\Python\\Python39\\python.exe',
                 }
             )
         end,

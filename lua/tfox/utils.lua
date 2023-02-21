@@ -84,5 +84,15 @@ function M.on_attach(on_attach)
 end
 
 
+function M.fontZoom(step)
+    local fontName = vim.opt.guifont:get()[1]
+    local s, e = string.find(fontName, ":h")
+    local size = string.sub(fontName, e+1, -1)
+    size = tostring(tonumber(size) + step)
+
+    local newfont = string.sub(fontName, 1, s) .. "h" .. size
+    vim.opt.guifont = newfont
+end
+
 
 return M
