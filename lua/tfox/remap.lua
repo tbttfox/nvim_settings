@@ -19,17 +19,8 @@ vim.keymap.set("i", ",", ",<c-g>u")
 vim.keymap.set("i", ".", ".<c-g>u")
 vim.keymap.set("i", ";", ";<c-g>u")
 
--- Joining stays at the left
-vim.keymap.set("n", "J", "mzJ`z")
-
--- searching stays in the middle of the screen
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-
 -- leader+paste/delete goes to the black hole
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("v", "<leader>p", [["_dP]])
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- here be dragons
