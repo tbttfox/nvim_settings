@@ -17,7 +17,6 @@ vim.opt.winaltkeys = 'no'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 vim.opt.undofile = true
