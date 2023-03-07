@@ -3,10 +3,6 @@
 local Utils = require("tfox.utils")
 
 return {
-
-    -- Global & Per project LSP configuration
-    { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
-
     -- Ensure that the lua LSP has access to neovim objects
     { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 
@@ -216,38 +212,268 @@ return {
         end,
     },
 
-    -- Set up all of my lsp in one place
+
+    -- LSP
+    { "hrsh7th/nvim-cmp" },
+    { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+    { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+    { "williamboman/mason-lspconfig.nvim" },
+    { "hrsh7th/cmp-nvim-lsp" },
+    {'hrsh7th/cmp-buffer'},
+    {'hrsh7th/cmp-path'},
+    {'hrsh7th/cmp-nvim-lua'},
+    {'L3MON4D3/LuaSnip'},
+    {'rafamadriz/friendly-snippets'},
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v1.x',
-        --event = { "BufReadPost", "BufNewFile" },
-        dependencies = {
-            -- LSP Support
-            {'neovim/nvim-lspconfig'},             -- Required
-            {'williamboman/mason.nvim'},           -- Optional
-            {'williamboman/mason-lspconfig.nvim'}, -- Optional
+        "jose-elias-alvarez/null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = { "mason.nvim" },
+        opts = function()
+            local nls = require("null-ls")
+            return {
+                sources = {
+                    -- nls.builtins.formatting.prettierd,
+                    nls.builtins.formatting.stylua,
+                    -- nls.builtins.diagnostics.flake8,
+                },
+            }
+        end,
+    },
 
-            -- Autocompletion
-            {'hrsh7th/nvim-cmp'},         -- Required
-            {'hrsh7th/cmp-nvim-lsp'},     -- Required
-            {'hrsh7th/cmp-buffer'},       -- Optional
-            {'hrsh7th/cmp-path'},         -- Optional
-            --{'saadparwaiz1/cmp_luasnip'}, -- Optional
-            {'hrsh7th/cmp-nvim-lua'},     -- Optional
-
-            -- Snippets
-            {'L3MON4D3/LuaSnip'},             -- Required
-            {'rafamadriz/friendly-snippets'}, -- Optional
-
-            -- Neoconf has to come first
-            {"folke/neoconf.nvim"}
+    {
+        "williamboman/mason.nvim",
+        cmd = "Mason",
+        keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+        opts = {
+            ensure_installed = {
+                "stylua",
+                "shellcheck",
+                "shfmt",
+                "flake8",
+            },
         },
+        ---@param opts MasonSettings | {ensure_installed: string[]}
+        config = function(plugin, opts)
+            require("mason").setup(opts)
+            local mr = require("mason-registry")
+            for _, tool in ipairs(opts.ensure_installed) do
+                local p = mr.get_package(tool)
+                if not p:is_installed() then
+                    p:install()
+                end
+            end
+        end,
+    },
+
+    {
+        "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+            { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+            "mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            "hrsh7th/cmp-nvim-lsp",
+        },
+        --[[
         init = function()
-            local lsp = require("lsp-zero")
-            lsp.preset("recommended")
-            lsp.nvim_workspace()
-            lsp.setup()
-        end
+            local keys = require("lazyvim.plugins.lsp.keymaps").get()
+            -- change a keymap
+            keys[#keys + 1] = { "K", "<cmd>echo 'hello'<cr>" }
+            -- disable a keymap
+            keys[#keys + 1] = { "K", false }
+            -- add a keymap
+            keys[#keys + 1] = { "H", "<cmd>echo 'hello'<cr>" }
+        end,
+        --]]
+        ---@class PluginLspOpts
+        opts = {
+            -- options for vim.diagnostic.config()
+            diagnostics = {
+                underline = true,
+                update_in_insert = false,
+                virtual_text = { spacing = 4, prefix = "●" },
+                severity_sort = true,
+            },
+            -- Automatically format on save
+            autoformat = true,
+            -- options for vim.lsp.buf.format
+            -- `bufnr` and `filter` is handled by the LazyVim formatter,
+            -- but can be also overridden when specified
+            format = {
+                formatting_options = nil,
+                timeout_ms = nil,
+            },
+
+            -- LSP Server Settings
+            ---@type lspconfig.options
+            servers = {
+                jsonls = {},
+                lua_ls = {
+                    -- mason = false, -- set to false if you don't want this server to be installed with mason
+                    settings = {
+                        Lua = {
+                            workspace = {
+                                checkThirdParty = false,
+                            },
+                            completion = {
+                                callSnippet = "Replace",
+                            },
+                            diagnostics = {
+                                globals = { 'vim' }
+                            },
+                        },
+                    },
+                },
+                pylsp = {
+                    settings = {
+                        pylsp = {
+                            plugins = {
+                                flake8 = {
+                                    enabled = true,
+                                    ignore = {
+                                        'W391', -- blank line at end of file
+                                        'W191', -- tab indents
+                                        'W503', -- line break before operator
+                                        'E203', -- Black likes to put shitespace around colons
+                                        'E501', -- Line Too Long
+                                        'N802', -- Function snake_case naming convention
+                                        'N803', -- Argument snake_case naming convention
+                                        'N806', -- Variable snake_case naming convention
+                                    },
+                                    maxLineLength = 100
+                                },
+                                pyflakes = { enabled = false },
+                                pycodestyle = { enabled = false },
+                                yapf = { enabled = false },
+                                autopep8 = { enabled = false },
+                            },
+                        },
+                    },
+                },
+            },
+
+            -- you can do any additional lsp server setup here
+            -- return true if you don't want this server to be setup with lspconfig
+            ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+            setup = {
+                -- example to setup with typescript.nvim
+                -- tsserver = function(_, opts)
+                --   require("typescript").setup({ server = opts })
+                --   return true
+                -- end,
+                -- Specify * to use this function as a fallback for any server
+                -- ["*"] = function(server, opts) end,
+            },
+        },
+
+        ---@param opts PluginLspOpts
+        config = function(plugin, opts)
+            -- setup autoformat
+            -- setup formatting and keymaps
+
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    --local buffer = args.buf
+                    --local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+
+                    local format = function()
+                        local buf = vim.api.nvim_get_current_buf()
+                        if vim.b.autoformat == false then
+                            return
+                        end
+                        local ft = vim.bo[buf].filetype
+                        local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+
+                        vim.lsp.buf.format(vim.tbl_deep_extend("force", {
+                            bufnr = buf,
+                            filter = function(cli)
+                                if have_nls then
+                                    return cli.name == "null-ls"
+                                end
+                                return cli.name ~= "null-ls"
+                            end,
+                        }, {}))
+                    end
+
+                    vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, {desc = "Line Diagnostics" })
+                    vim.keymap.set("n", "<leader>cl", "<cmd>LspInfo<cr>", {desc = "Lsp Info" })
+                    vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", {desc = "Goto Definition" })
+                    vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", {desc = "References" })
+                    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {desc = "Goto Declaration" })
+                    vim.keymap.set("n", "gI", "<cmd>Telescope lsp_implementations<cr>", {desc = "Goto Implementation" })
+                    vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<cr>", {desc = "Goto Type Definition" })
+                    vim.keymap.set("n", "K", vim.lsp.buf.hover, {desc = "Hover" })
+                    vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, {desc = "Code Action" })
+                    vim.keymap.set("n", "<leader>cf", format, {desc = "Format Document"})
+                    vim.keymap.set("v", "<leader>cf", format, {desc = "Format Range"})
+                    vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, {desc = "Signature Help"})
+                    vim.keymap.set("i",  "<c-k>", vim.lsp.buf.signature_help, {desc = "Signature Help"})
+
+                    --vim.keymap.set("n", "]d", M.diagnostic_goto(true), {desc = "Next Diagnostic" })
+                    --vim.keymap.set("n", "[d", M.diagnostic_goto(false), {desc = "Prev Diagnostic" })
+                    --vim.keymap.set("n", "]e", M.diagnostic_goto(true, "ERROR"), {desc = "Next Error" })
+                    --vim.keymap.set("n", "[e", M.diagnostic_goto(false, "ERROR"), {desc = "Prev Error" })
+                    --vim.keymap.set("n", "]w", M.diagnostic_goto(true, "WARN"), {desc = "Next Warning" })
+                    --vim.keymap.set("n", "[w", M.diagnostic_goto(false, "WARN"), {desc = "Prev Warning" })
+                end
+            })
+
+            -- diagnostics
+            for name, icon in pairs(Utils.icons.diagnostics) do
+                name = "DiagnosticSign" .. name
+                vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+            end
+            vim.diagnostic.config(opts.diagnostics)
+
+            local servers = opts.servers
+            local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+            local function setup(server)
+                local server_opts = vim.tbl_deep_extend("force", {
+                    capabilities = vim.deepcopy(capabilities),
+                }, servers[server] or {})
+
+                if opts.setup[server] then
+                    if opts.setup[server](server, server_opts) then
+                        return
+                    end
+                elseif opts.setup["*"] then
+                    if opts.setup["*"](server, server_opts) then
+                        return
+                    end
+                end
+                require("lspconfig")[server].setup(server_opts)
+            end
+
+            -- temp fix for lspconfig rename
+            -- https://github.com/neovim/nvim-lspconfig/pull/2439
+            local mappings = require("mason-lspconfig.mappings.server")
+            if not mappings.lspconfig_to_package.lua_ls then
+                mappings.lspconfig_to_package.lua_ls = "lua-language-server"
+                mappings.package_to_lspconfig["lua-language-server"] = "lua_ls"
+            end
+
+            local mlsp = require("mason-lspconfig")
+            local available = mlsp.get_available_servers()
+
+            local ensure_installed = {} ---@type string[]
+            for server, server_opts in pairs(servers) do
+                if server_opts then
+                    server_opts = server_opts == true and {} or server_opts
+                    -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
+                    if server_opts.mason == false or not vim.tbl_contains(available, server) then
+                        setup(server)
+                    else
+                        ensure_installed[#ensure_installed + 1] = server
+                    end
+                end
+            end
+
+            require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
+            require("mason-lspconfig").setup_handlers({ setup })
+        end,
     },
 
     -- Automatically CD to the root of the current project
@@ -384,11 +610,11 @@ return {
         end,
         opts = {
             mappings = {
-                add = "ys", -- Add surrounding in Normal and Visual modes
+                add = "ss", -- Add surrounding in Normal and Visual modes
                 delete = "ds", -- Delete surrounding
-                find = "yf", -- Find surrounding (to the right)
-                find_left = "yF", -- Find surrounding (to the left)
-                highlight = "yh", -- Highlight surrounding
+                find = "sf", -- Find surrounding (to the right)
+                find_left = "sF", -- Find surrounding (to the left)
+                highlight = "sh", -- Highlight surrounding
                 replace = "cs", -- Replace surrounding
             },
         },
@@ -614,7 +840,6 @@ return {
         },
     },
 
-    --[[
     -- Notifications go in the top-right
     {
         "rcarriga/nvim-notify",
@@ -635,6 +860,7 @@ return {
             max_width = function()
                 return math.floor(vim.o.columns * 0.75)
             end,
+            level = 3, -- Only show errors/warnings as popups
         },
     },
 
@@ -661,6 +887,9 @@ return {
         "folke/noice.nvim",
         event = "VeryLazy",
         opts = {
+            cmdline = {
+                view = "cmdline",
+            },
             lsp = {
                 override = {
                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -668,8 +897,8 @@ return {
                 },
             },
             presets = {
-                bottom_search = true,
-                command_palette = true,
+                -- bottom_search = true,
+                -- command_palette = true,
                 long_message_to_split = true,
             },
         },
@@ -683,7 +912,6 @@ return {
             { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = {"i", "n", "s"}},
         },
     },
-    --]]
 
     -- The Debug Adapter Protocol
     {

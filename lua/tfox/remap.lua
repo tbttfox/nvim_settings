@@ -86,3 +86,11 @@ vim.keymap.set("x", "il", "g_o^", { silent = true })
 vim.keymap.set("o", "il", ":normal vil<CR>", { silent = true })
 vim.keymap.set("x", "al", "$o^", { silent = true })
 vim.keymap.set("o", "al", ":normal val<CR>", { silent = true })
+
+-- Clear search with <esc>
+vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+vim.keymap.set({"n", "x", "o"}, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set({"n", "x", "o"}, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+

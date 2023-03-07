@@ -16,4 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 require("tfox.remap")
 require("tfox.set")
 require("tfox.autocmd")
-require("lazy").setup("tfox.lazyConfig")
+require("lazy").setup("tfox.lazyConfig", {
+    performance = {
+        rtp = {
+            reset = false
+        }
+    }
+})
