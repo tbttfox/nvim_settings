@@ -3,6 +3,7 @@
 local Utils = require("tfox.utils")
 
 return {
+
     -- Ensure that the lua LSP has access to neovim objects
     { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
 
@@ -75,7 +76,7 @@ return {
                 keymaps = {
                     init_selection = "<c-space>",
                     node_incremental = "<c-space>",
-                    scope_incremental = "<nop>",
+                    scope_incremental = false,
                     node_decremental = "<bs>",
                 },
             },
@@ -115,7 +116,6 @@ return {
     -- A UI component library
     { "MunifTanjim/nui.nvim", lazy = true },
 
-    --[[
     -- Separate words into subword objects
     {
         "chaoren/vim-wordmotion",
@@ -123,7 +123,6 @@ return {
             vim.g.wordmotion_prefix = ','
         end
     },
-    --]]
 
     -- List the open buffers along the top of the screen
     {
@@ -275,17 +274,7 @@ return {
             "williamboman/mason-lspconfig.nvim",
             "hrsh7th/cmp-nvim-lsp",
         },
-        --[[
-        init = function()
-            local keys = require("lazyvim.plugins.lsp.keymaps").get()
-            -- change a keymap
-            keys[#keys + 1] = { "K", "<cmd>echo 'hello'<cr>" }
-            -- disable a keymap
-            keys[#keys + 1] = { "K", false }
-            -- add a keymap
-            keys[#keys + 1] = { "H", "<cmd>echo 'hello'<cr>" }
-        end,
-        --]]
+
         ---@class PluginLspOpts
         opts = {
             -- options for vim.diagnostic.config()
@@ -647,7 +636,7 @@ return {
             { "<leader>e", "<leader>fe", desc = "Explorer NeoTree", remap = true },
         },
         deactivate = function()
-            vim.cmd([[Neotree close]])
+            vim.cmd("Neotree close")
         end,
         init = function()
             vim.g.neo_tree_remove_legacy_commands = 1
@@ -999,5 +988,4 @@ return {
             dap.listeners.after.event_exited["dapui_config"] = dapui.close
         end,
     },
-
 }

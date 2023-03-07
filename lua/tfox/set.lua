@@ -11,8 +11,6 @@ vim.opt.shiftwidth = 4
 vim.opt.shiftround = true
 vim.opt.expandtab = true
 
-vim.opt.smartindent = true
-
 vim.opt.wrap = false
 vim.opt.winaltkeys = 'no'
 
